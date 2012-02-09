@@ -54,7 +54,7 @@
     for (var i in ids) {
       var id = ids[i];
       
-      $('a[rel="' + '__tsd-' + id + '"]').click({'id': id}, function(event) {
+      $('a[rel="__tsd-' + id + '"]').click({'id': id}, function(event) {
         var href = $(this).attr('href');
         setTimeout('window.location.href = "' + href + '";', 1000); // always go
         
@@ -94,7 +94,7 @@
     args.key = key;
     var url = 'http://api.thesocialdigits.com/v1/' + api + '?callback=?';
     var data = {
-            'data': JSON.stringify(args)
+            'payload': JSON.stringify(args)
           };
   
     $.getJSON(url, data, callback);
