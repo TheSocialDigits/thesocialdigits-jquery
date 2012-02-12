@@ -78,7 +78,7 @@
       var tmp = template.replace('<a', '<a rel="__tsd-' + product['id'] + '"');
       
       for (var key in product) {
-        tmp = tmp.replace('{' + key + '}', product[key]);
+        tmp = tmp.replace(new RegExp('{' + key + '}', 'g'), product[key]);
       }
       
       output += tmp;
