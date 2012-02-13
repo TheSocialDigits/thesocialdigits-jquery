@@ -66,7 +66,7 @@
    */
   function buildHTML(elm, ids, template, _products) { 
     // ensure the correct sorting of product data
-    products = [];
+    var products = [];
     
     for (var i in ids) {
       var id = ids[i];
@@ -88,7 +88,7 @@
       
       $('a[rel="__tsd-' + id + '"]').click({'id': id}, function(event) {
         var href = $(this).attr('href');
-        setTimeout('window.location.href = "' + href + '";', 1000); // always go
+        setTimeout('window.location.href = "' + href + '";', 500); // always go
         
         callAPI('__log_click', {'product': event.data.id}, function() {
           window.location.href = href; // go on success
