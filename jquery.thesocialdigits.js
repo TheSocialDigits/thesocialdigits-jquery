@@ -43,6 +43,7 @@
       for(var j in _products) {
         if(_products[j]['id'] == id) {
           products[i] = _products[j];
+          break;
         }
       }
     }
