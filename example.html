@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>The Social Digits jQuery plugin example</title>
+    <title>The Social Digits jQuery plugin example - popular products</title>
     
     <!-- Load jQuery. -->
     <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
@@ -13,14 +13,16 @@
   </head>
   <body>
   
-  <!-- The list we want to display the products in. -->
+  <!-- The list we want to display the popular products in. -->
   <ul id="products"></ul>
   
   <!-- The template to be used when rendering the products. 
        
        All variables in the template is denoted by {}, so the variable named var
        is denoted {var}. This template is applied to each product in the result
-       from The Social Digits API method.
+       from The Social Digits API method. Each key in the products 
+       dictionary/object, given by the datasource function you have defined in
+       the plugin source, is mapped to a variable name.
        
        Remember to set the type attribute to 'text/html' for templates.
    -->
