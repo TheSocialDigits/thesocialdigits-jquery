@@ -76,7 +76,7 @@
     
     for (var i in products) {
       var product = products[i];
-      var tmp = template.replace('<a', '<a rel="__tsd-' + product['id'] + '"');
+      var tmp = template.replace(new RegExp('<a', 'g'), '<a rel="__tsd-' + product['id'] + '"');
       
       for (var key in product) {
         tmp = tmp.replace(new RegExp('{' + key + '}', 'g'), product[key]);
