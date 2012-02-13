@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>The Social Digits jQuery plugin example</title>
+    
+    <!-- Load jQuery. -->
+    <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
+    
+    <!-- JSON support for legacy browsers. -->
+    <script type="text/javascript" src="/json2.min.js"></script>
+    
+    <!-- The actual plugin for The Social Digits service. -->
+    <script type="text/javascript" src="/jquery.thesocialdigits.js"></script>
+  </head>
+  <body>
+  
+  <!-- The list we want to display the products in. -->
+  <ul id="products"></ul>
+  
+  <!-- The template to be used when rendering the products. 
+       
+       All variables in the template is denoted by {}, so the variable named var
+       is denoted {var}. This template is applied to each product in the result
+       from The Social Digits API method.
+       
+       Remember to set the type attribute to 'text/html' for templates.
+   -->
+  <script id="productsTemplate" type="text/html"> 
+    <li>
+      <a href="/product/{id}">
+        <img src="/images/product/{id}.jpg" />
+        {name} - {price},-
+      </a>
+    </li>
+  </script>
+  
+  <!-- The actual use of the plugin. 
+  
+       This loads the three most popular products that costs less than 50 into
+       the element having id 'products' using the template 'productsTemplate'.
+   -->
+  <script type="text/javascript">
+    $('#products').thesocialdigits('popular', 
+                                   {'limit': 3,
+                                    'filter': 'price < 50'},
+                                   '#productsTemplate');
+  </script>
+  
+  </body>
+</html>
+    

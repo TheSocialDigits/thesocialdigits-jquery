@@ -6,7 +6,7 @@
   var key = ''; // TODO add your API key
   var datasource = function (products, callback) {
     // TODO add your data call
-    $.getJSON(your_url, url_params, callback);
+    // $.getJSON(your_url, url_params, callback);
   };
 
 
@@ -15,8 +15,13 @@
   
 
   
-  /*
-   * Main invocation method.
+  /**
+   * Main invocation method for The Social Digits plugin.
+   * 
+   * @param api The name of the API.
+   * @param args The arguments for the API except 'key' and 'visitor' argument
+   *             which are handled automaticly.
+   * @param template A jQuery selector for the template to be used.
    */
   $.fn.thesocialdigits = function(api, args, template) {
     var elm = this;
