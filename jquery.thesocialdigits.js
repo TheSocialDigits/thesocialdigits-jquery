@@ -88,9 +88,10 @@
       
       $('a[rel="__tsd-' + id + '"]').click({'id': id}, function(event) {
         var href = $(this).attr('href');
-        setTimeout('window.location.href = "' + href + '";', 500); // always go
+        var t = setTimeout('window.location.href = "' + href + '";', 500); // always go
         
         callAPI('__log_click', {'product': event.data.id}, function() {
+          clearTimeout(t);
           window.location.href = href; // go on success
         });
         
