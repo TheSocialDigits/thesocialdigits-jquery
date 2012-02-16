@@ -98,6 +98,9 @@
         return false; // don't go yet
       });
     }
+    
+    // cleanup to leave unmodified HTML
+    $('a[rel|="__tsd"]').removeAttr('rel');
   }
 
   /*
