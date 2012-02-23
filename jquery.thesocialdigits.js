@@ -54,8 +54,11 @@
     
     callAPI(api, args, function(data) {
       if('result' in data) {
+        var metadata = {'api': api,
+                        'args': args};
+      
         datasource(data.result, function(products) {
-          buildHTML(elm, data.result, template, products);
+          buildHTML(elm, data.result, template, products, metadata);
         });
       }
     });
@@ -64,7 +67,7 @@
   /*
    * Build HTML from template.
    */
-  function buildHTML(elm, ids, template, _products) { 
+  function buildHTML(elm, ids, template, _products, metadata) { 
     // ensure the correct sorting of product data
     var products = [];
     
@@ -88,9 +91,10 @@
       
       $('a[rel="__tsd-' + id + '"]').click({'id': id}, function(event) {
         var href = $(this).attr('href');
-        var t = setTimeout('window.location.href = "' + href + '";', 500); // always go
+        var t = setTimeout('window.location.href = "' + href + '";', 500);
         
-        callAPI('__log_click', {'product': event.data.id}, function() {
+        callAPI('__log_click', {'product': event.data.id,
+                                'metadata': metadata}, function() {
           clearTimeout(t);
           window.location.href = href; // go on success
         });
