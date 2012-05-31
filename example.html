@@ -10,6 +10,23 @@
     
     <!-- The actual plugin for The Social Digits service. -->
     <script type="text/javascript" src="/jquery.thesocialdigits.js"></script>
+    
+    <!-- Set global configuration of the plugin. Can be exported to an external
+         JavaScript file since it is always the same. -->
+    <script type="text/javascript">
+      $.thesocialdigits({
+        key: 'your_api_key', 
+        
+        datasource: function (products, callback) {
+          var url = 'http://example.com/datafeed';
+          var data = {
+            'products': products.join(',')
+          };
+  
+          $.getJSON(url, data, callback);
+        }
+      });
+    </script>
   </head>
   <body>
   

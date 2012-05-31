@@ -1,46 +1,20 @@
 (function( $ ) {
   
-  /*
-   * Configuration.
+  // Global settings
+  var settings = {
+    key: '',
+    datasource: function(products, callback) {}
+  }
+  
+  
+  /**
+   * Initial setup of the plugin.
    */
-  var key = ''; // TODO add your API key
-  var datasource = function (products, callback) {
-    // TODO add your data call
-    // Example: $.getJSON(your_url, url_params, callback);
-    /*
-     * @param products A list of product to get data for.
-     * @param callback The function to call with the product data.
-     *
-     * The callback method takes a list of dictionaries/objects containing the 
-     * data for each product in the products argument. This is used for 
-     * rendering templates so if your template uses the variables id, name and
-     * price and you are the list [2,42,1337] as the products argument then the
-     * argument for callback should be like:
-     *
-     *     [{'id': 2,
-     *       'name': 'The name of 2',
-     *       'price' 1.99
-     *       }, 
-     *      {'id': 42,
-     *       'name': 'The name of 42',
-     *       'price' 49.0
-     *       }, 
-     *      {'id': 1337,
-     *       'name': 'The name of 1337',
-     *       'price' 100.0}]
-     *
-     * The order dosn't matter but all dictionaries/object MUST have an entry
-     * named 'id' with the products ID. Also if the ID is not used in any 
-     * template. 
-     */
-  };
+  $.thesocialdigits = function(newSettings) {
+    settings.key = newSettings.key;
+    settings.datasource = newSettings.datasource;
+  }
 
-
-  
-  /**************************************************************************/
-  
-
-  
   /**
    * Main invocation method for The Social Digits plugin.
    * 
@@ -49,6 +23,7 @@
    *             which are handled automaticly.
    * @param template A jQuery selector for the template to be used.
    */
+
   $.fn.thesocialdigits = function(api, args, template) {
     var elm = this;
     
@@ -57,7 +32,7 @@
         var metadata = {'api': api,
                         'args': args};
       
-        datasource(data.result, function(products) {
+        settings.datasource(data.result, function(products) {
           buildHTML(elm, data.result, template, products, metadata);
         });
       }
@@ -131,7 +106,7 @@
    * Base function to call the API.
    */
   function callAPI(api, args, callback) {
-    args.key = key;
+    args.key = settings.key;
     var url = 'http://api.thesocialdigits.com/v1/' + api + '?callback=?';
     var data = {
             'payload': JSON.stringify(args)
