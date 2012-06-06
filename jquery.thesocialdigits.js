@@ -46,10 +46,10 @@
     // ensure the correct sorting of product data
     var products = [];
     
-    for (var i in ids) {
+    for (var i = 0; i < ids.length; i++) {
       var id = ids[i];
       
-      for(var j in _products) {
+      for(var j = 0; j < _products.length; j++) {
         if(_products[j]['id'] == id) {
           products[i] = _products[j];
           break;
@@ -61,7 +61,7 @@
     elm.append(renderTemplate($(template).html(), products));
     
     // add click logging
-    for (var i in ids) {
+    for (var i = 0; i < ids.length; i++) {
       var id = ids[i];
       
       $('a[rel="__tsd-' + id + '"]').click({'id': id}, function(event) {
@@ -88,7 +88,7 @@
   function renderTemplate(template, products) {
     var output = '';
     
-    for (var i in products) {
+    for (var i = 0; i < products.length; i++) {
       var product = products[i];
       var tmp = template.replace(new RegExp('<a', 'g'), '<a rel="__tsd-' + product['id'] + '"');
       
