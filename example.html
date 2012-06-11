@@ -8,8 +8,8 @@
     <!-- JSON support for legacy browsers. -->
     <script type="text/javascript" src="/json2.min.js"></script>
     
-    <!-- The actual plugin for The Social Digits service. -->
-    <script type="text/javascript" src="/jquery.thesocialdigits.js"></script>
+    <!-- The actual plugin for The Social Digits. -->
+    <script type="text/javascript" src="/jquery.thesocialdigits.min.js"></script>
     
     <!-- Set global configuration of the plugin. Can be exported to an external
          JavaScript file since it is always the same. -->
@@ -18,7 +18,25 @@
         key: 'your_api_key', 
         
         datasource: function (products, callback) {
-          var url = 'http://example.com/datafeed';
+          /**
+           * The function for loading product data for the products determined
+           * by the API call. The function takes the list of product ids to 
+           * fetch information for and a callback function. The callback function
+           * takes a list of dictionaries corresponding to the template-date for
+           * each product. Each key in the dictionary is mapped to a template
+           * variable and each dictionary must contain the key id which contains
+           * the product id.
+           *
+           * As an example if the products are [1,2,3] and the template contains
+           * the variables id, name and price (as in the template below) the 
+           * argument to callback should be: 
+           *
+           *   [{'id': 1, 'price': 12.0, 'name': 'Nice product 1'},
+           *    {'id': 2, 'price': 8.0, 'name': 'Nice product 2'},
+           *    {'id': 3, 'price': 14.0, 'name': 'Nice product 3'}]
+           *
+           */ 
+          var url = 'http://your-domain.com/datafeed.php';
           var data = {
             'products': products.join(',')
           };
@@ -39,7 +57,7 @@
        is denoted {var}. This template is applied to each product in the result
        from The Social Digits API method. Each key in the products 
        dictionary/object, given by the datasource function you have defined in
-       the plugin source, is mapped to a variable name.
+       the plugin configuration, is mapped to a variable name.
        
        Remember to set the type attribute to 'text/html' for templates.
    -->
