@@ -68,8 +68,9 @@
         var href = $(this).attr('href');
         var t = setTimeout('window.location.href = "' + href + '";', 500);
         
-        callAPI('__log_click', {'product': event.data.id,
-                                'metadata': metadata}, function() {
+        callAPI('log_click', {'product': event.data.id,
+                              'api': metadata.api,
+                              'metadata': metadata}, function() {
           clearTimeout(t);
           window.location.href = href; // go on success
         });
