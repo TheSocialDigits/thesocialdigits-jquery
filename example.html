@@ -15,7 +15,7 @@
          JavaScript file since it is always the same. -->
     <script type="text/javascript">
       $.thesocialdigits({
-        key: 'your_api_key', 
+        key: 'your_api_key', // TODO insert your API key here.
         
         datasource: function (products, callback) {
           /**
@@ -35,10 +35,16 @@
            *    {'id': 2, 'price': 8.0, 'name': 'Nice product 2'},
            *    {'id': 3, 'price': 14.0, 'name': 'Nice product 3'}]
            *
+           * As default it uses the attributes API so in your template you can
+           * use all attributes except the product description.
            */ 
-          var url = 'http://your-domain.com/datafeed.php';
+          var url = 'http://api.thesocialdigits.com/v1/attributes?callback=?';
           var data = {
-            'products': products.join(',')
+            'payload': JSON.stringify({
+              'key': 'your_api_key', // TODO insert your API key here.
+              'products': products,
+              'language': 'english' // TODO add correct language
+            })
           };
   
           $.getJSON(url, data, callback);
