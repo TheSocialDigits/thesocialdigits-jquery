@@ -78,4 +78,5 @@ example of an template:
 
 
 [1] http://developers.thesocialdigits.com/docs/export-data/data-feed
+
 [2] http://developers.thesocialdigits.com/docs/api/methods
