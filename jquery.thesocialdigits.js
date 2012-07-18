@@ -11,8 +11,7 @@
    * Initial setup of the plugin.
    */
   $.thesocialdigits = function(newSettings) {
-    settings.key = newSettings.key;
-    settings.datasource = newSettings.datasource;
+    $.extend(settings, newSettings);
   }
 
   /**
