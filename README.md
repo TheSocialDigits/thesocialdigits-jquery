@@ -91,10 +91,10 @@ _ga\_tracking_ parameter:
         ga_tracking: 'Tracking category name'
       });
 
-The event action is the name of the API used and the label is the product id and
+The event action is the name of the API and the event label is the product id and
 name as a string _id: name_.
 
-To diable event tracking just set the parameter to _null_:
+To disable event tracking just set the parameter to _null_:
 
     $.thesocialdigits({
         key: ... ,
