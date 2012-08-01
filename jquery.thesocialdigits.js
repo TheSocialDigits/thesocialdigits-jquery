@@ -69,7 +69,7 @@
         if(settings.ga_tracking != null && typeof _gaq != 'undefined') {
           _gaq.push(['_trackEvent', 
                      settings.ga_tracking, 
-                     'Click via ' + metadata['api'], 
+                     metadata['api'], 
                      event.data.id + ': ' + event.data.name]);
         }
         
