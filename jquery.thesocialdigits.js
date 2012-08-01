@@ -3,7 +3,8 @@
   // Global settings
   var settings = {
     key: '',
-    datasource: function(products, callback) {}
+    datasource: function(products, callback) {},
+    ga_tracking: 'The Social Digits'
   }
   
   
@@ -61,10 +62,20 @@
     
     // add click logging
     for (var i = 0; i < ids.length; i++) {
-      var id = ids[i];
+      var product = products[i];
       
-      $('a[rel="__tsd-' + id + '"]').click({'id': id}, function(event) {
+      $('a[rel="__tsd-' + product.id + '"]').click(product, function(event) {
+        // Google Analytics tracking
+        if(settings.ga_tracking != null && typeof _gaq != 'undefined') {
+          _gaq.push(['_trackEvent', 
+                     settings.ga_tracking, 
+                     'Click via ' + metadata['api'], 
+                     event.data.id + ': ' + event.data.name]);
+        }
+        
+        // TSD click logging
         var href = $(this).attr('href');
+        
         var t = setTimeout('window.location.href = "' + href + '";', 500);
         
         callAPI('log_click', {'product': event.data.id,
