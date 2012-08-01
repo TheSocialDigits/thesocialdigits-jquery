@@ -22,12 +22,12 @@ API. Here is an example of a basic configuration.
 var api_key = 'your_api_key'; // TODO insert your API key here. 
 
 $.thesocialdigits({
-  key: key,  
+  key: api_key,  
   datasource: function (products, callback) {
     var url = 'http://api.thesocialdigits.com/v1/attributes?callback=?';
     var data = {
       'payload': JSON.stringify({
-        'key': key
+        'key': api_key,
         'products': products,
         'language': 'english' // TODO add correct language
       })
