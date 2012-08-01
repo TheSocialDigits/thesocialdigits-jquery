@@ -19,22 +19,22 @@ and a function to load template data from. As default you can use our attributes
 API. Here is an example of a basic configuration.
 
 ```javascript
-    var api_key = 'your_api_key'; // TODO insert your API key here. 
-    
-    $.thesocialdigits({
-      key: key,  
-      datasource: function (products, callback) {
-        var url = 'http://api.thesocialdigits.com/v1/attributes?callback=?';
-        var data = {
-          'payload': JSON.stringify({
-            'key': key
-            'products': products,
-            'language': 'english' // TODO add correct language
-          })
-        };
-        $.getJSON(url, data, callback);
-      }
-    });
+var api_key = 'your_api_key'; // TODO insert your API key here. 
+
+$.thesocialdigits({
+  key: key,  
+  datasource: function (products, callback) {
+    var url = 'http://api.thesocialdigits.com/v1/attributes?callback=?';
+    var data = {
+      'payload': JSON.stringify({
+        'key': key
+        'products': products,
+        'language': 'english' // TODO add correct language
+      })
+    };
+    $.getJSON(url, data, callback);
+  }
+});
 ```
 
 Note that the plugin must be configured before it can be used but the 
@@ -49,10 +49,10 @@ After the configuration the plugin is ready for use. The following example loads
 _products_ using the template _productsTemplate_.
 
 ```javascript
-    $('#products').thesocialdigits('popular', 
-                                   {'limit': 3,
-                                    'filter': 'price < 50'},
-                                   '#productsTemplate');
+$('#products').thesocialdigits('popular', 
+                               {'limit': 3,
+                                'filter': 'price < 50'},
+                               '#productsTemplate');
 ```
 
 Thats all there is to it! The first argument is the API name, the second is the
@@ -71,14 +71,14 @@ the data feed [1] can be used as a variable in the template. Here is a small
 example of an template:
 
 ```html
-    <script id="productsTemplate" type="text/html"> 
-      <li>
-        <a href="/product/{id}">
-          <img src="/images/product/{id}.jpg" />
-          {name} - {price},-
-        </a>
-      </li>
-    </script>
+<script id="productsTemplate" type="text/html"> 
+  <li>
+    <a href="/product/{id}">
+      <img src="/images/product/{id}.jpg" />
+      {name} - {price},-
+    </a>
+  </li>
+</script>
 ```
 
 
@@ -92,11 +92,11 @@ _The Social Digits_ but can be specified in the configuration via the
 _ga\_tracking_ parameter:
 
 ```javascript
-    $.thesocialdigits({
-      key: ... ,
-      datasource: ... ,
-      ga_tracking: 'Tracking category name'
-    });
+$.thesocialdigits({
+  key: ... ,
+  datasource: ... ,
+  ga_tracking: 'Tracking category name'
+});
 ```
 
 The event action is the name of the API and the event label is the product id and
@@ -105,11 +105,11 @@ name as a string _id: name_.
 To disable event tracking just set the parameter to _null_:
 
 ```javascript
-    $.thesocialdigits({
-      key: ... ,
-      datasource: ... ,
-      ga_tracking: null
-    });
+$.thesocialdigits({
+  key: ... ,
+  datasource: ... ,
+  ga_tracking: null
+});
 ```
 
 
