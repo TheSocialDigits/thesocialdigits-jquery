@@ -76,6 +76,33 @@ example of an template:
     </script>
 
 
+Google Analytics tracking
+-------------------------
+
+The plugin supports event tracking via Google Analytics which is enabled by 
+default if Analytics is used on the site. The event is triggered every time a
+cutomer clicks on a product. The event category is by default set to 
+_The Social Digits_ but can be specified in the configuration via the 
+_ga\_tracking_ parameter:
+
+    $.thesocialdigits({
+        key: ... ,
+        datasource: ... ,
+        ga_tracking: 'Tracking category name'
+      });
+
+The event action is the name of the API used and the label is the product id and
+name as a string _id: name_.
+
+To diable event tracking just set the parameter to _null_:
+
+    $.thesocialdigits({
+        key: ... ,
+        datasource: ... ,
+        ga_tracking: null
+      });
+
+
 
 [1] http://developers.thesocialdigits.com/docs/export-data/data-feed
 
