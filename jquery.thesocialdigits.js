@@ -89,6 +89,18 @@
       });
     }
     
+    // handle onclick attribute as jquery events
+    $('a[rel|="__tsd"]').each(function() {
+      var code = $(this).attr('onclick');
+      
+      if(typeof code != 'undefined') {
+        $(this).removeAttr('onclick');
+        $(this).click(function () {
+          eval(code);
+        });
+      }
+    });
+    
     // cleanup to leave unmodified HTML
     $('a[rel|="__tsd"]').removeAttr('rel');
   }
