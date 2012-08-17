@@ -60,6 +60,17 @@ arguments for the API and the third is the template used to present the products
 For a full list of avaliable APIs and their argument visit the API documentation
 [2].
 
+An callback function can be passed as an optional fourth parameter. It is called 
+when the full template has been rendered.
+
+```javascript
+$('#products').thesocialdigits('popular', 
+                               {'limit': 3,
+                                'filter': 'price < 50'},
+                               '#productsTemplate',
+                               function() { alert('hello!'); });
+```
+
 
 Templating
 ----------

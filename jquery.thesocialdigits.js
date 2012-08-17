@@ -24,7 +24,7 @@
    * @param template A jQuery selector for the template to be used.
    */
 
-  $.fn.thesocialdigits = function(api, args, template) {
+  $.fn.thesocialdigits = function(api, args, template, callback) {
     var elm = this;
     
     callAPI(api, args, function(data) {
@@ -34,6 +34,10 @@
       
         settings.datasource(data.result, function(products) {
           buildHTML(elm, data.result, template, products, metadata);
+          
+          if(typeof callback === 'function') {
+          	callback();
+          }
         });
       }
     });
