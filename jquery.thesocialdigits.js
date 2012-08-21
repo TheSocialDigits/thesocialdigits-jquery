@@ -36,7 +36,7 @@
           buildHTML(elm, data.result, template, products, metadata);
           
           if(typeof callback === 'function') {
-          	callback();
+          	callback(data);
           }
         });
       }
