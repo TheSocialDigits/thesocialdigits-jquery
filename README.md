@@ -19,21 +19,8 @@ and a function to load template data from. As default you can use our attributes
 API. Here is an example of a basic configuration.
 
 ```javascript
-var api_key = 'your_api_key'; // TODO insert your API key here. 
-
 $.thesocialdigits({
-  key: api_key,  
-  datasource: function (products, callback) {
-    var url = 'http://api.thesocialdigits.com/v1/attributes?callback=?';
-    var data = {
-      'payload': JSON.stringify({
-        'key': api_key,
-        'products': products,
-        'language': 'english' // TODO add correct language
-      })
-    };
-    $.getJSON(url, data, callback);
-  }
+  key: 'your_api_key' // TODO insert your API key here. 
 });
 ```
 
@@ -91,6 +78,35 @@ example of an template:
   </li>
 </script>
 ```
+
+### Fetch template metadata from own server
+
+By default the product metadata used to render the template is fetched from 
+The Social Digits API and only data provided in the datafeed is provided. In 
+order to provide more flexibility you can fetch this data from your own 
+servers by implementing the datasource function in the configuration as
+demonstrated below:
+
+```javascript
+$.thesocialdigits({
+  key: 'your_api_key' // TODO insert your API key here.  
+  datasource: function (products, callback) {
+    var url = 'http://example.com/product_metadata';
+    var data = {
+      'products': JSON.stringify(products)
+    };
+    $.getJSON(url, data, callback);
+  }
+});
+```
+
+The function takes two arguments:
+ * products: The list of products id's contained in the result.
+ * callback: A callback function to perform the rendering. It takes a single
+ argument which is a list of dictionaries. Each dictionary represents the data
+ associated with each product. Each key in the dictionarry corresponds to a 
+ template variable but each dictionary must have an entry named 'id' with the
+ product id.
 
 
 Google Analytics tracking

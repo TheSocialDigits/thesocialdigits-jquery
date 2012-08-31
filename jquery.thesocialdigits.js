@@ -3,7 +3,9 @@
   // Global settings
   var settings = {
     key: '',
-    datasource: function(products, callback) {},
+    datasource: function(products, callback) {
+        callAPI('attributes', {'products': products}, callback);
+    },
     ga_tracking: 'The Social Digits'
   }
   
@@ -23,7 +25,6 @@
    *             which are handled automaticly.
    * @param template A jQuery selector for the template to be used.
    */
-
   $.fn.thesocialdigits = function(api, args, template, callback) {
     var elm = this;
     

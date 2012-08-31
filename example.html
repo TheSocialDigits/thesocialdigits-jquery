@@ -16,32 +16,6 @@
     <script type="text/javascript">
       $.thesocialdigits({
         key: 'your_api_key', // TODO insert your API key here.
-        
-        datasource: function (products, callback) {
-          /**
-           * The function to load product data to the template.
-           * 
-           * As default it uses the attributes API so in your template you can
-           * use all product attributes except the product description.
-           *
-           * You can however replace this by your own datasource as long as it
-           * returns the same dictionary structure:
-           *
-           *   [{'id': 1, 'price': 12.0, 'name': 'Nice product 1'},
-           *    {'id': 2, 'price': 8.0, 'name': 'Nice product 2'},
-           *    {'id': 3, 'price': 14.0, 'name': 'Nice product 3'}]
-           */ 
-          var url = 'http://api.thesocialdigits.com/v1/attributes?callback=?';
-          var data = {
-            'payload': JSON.stringify({
-              'key': 'your_api_key', // TODO insert your API key here.
-              'products': products,
-              'language': 'english' // TODO add correct language
-            })
-          };
-  
-          $.getJSON(url, data, callback);
-        }
       });
     </script>
   </head>
