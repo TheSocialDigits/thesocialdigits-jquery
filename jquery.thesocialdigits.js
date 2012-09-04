@@ -137,10 +137,21 @@
     args.key = settings.key;
     var url = 'http://api.thesocialdigits.com/v1/' + api + '?callback=?';
     var data = {
-            'payload': JSON.stringify(args)
+            'payload': toJSON(args)
           };
   
     $.getJSON(url, data, callback);
+  }
+
+  /*
+   * Special method to handle JSON encoding in presence of other noisy frameworks.
+   */
+  function toJSON(data) {
+    if(window.Prototype) {
+      return Object.toJSON(data);
+    } else {
+      return JSON.stringify(data);
+    }
   }
 
 })( jQuery );
