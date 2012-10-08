@@ -44,19 +44,8 @@ $('#products').thesocialdigits('popular',
 
 Thats all there is to it! The first argument is the API name, the second is the
 arguments for the API and the third is the template used to present the products.
-For a full list of avaliable APIs and their argument visit the API documentation
+For a full list of available APIs and their argument visit the API documentation
 [2].
-
-An callback function can be passed as an optional fourth parameter. It is called 
-when the full template has been rendered.
-
-```javascript
-$('#products').thesocialdigits('popular', 
-                               {'limit': 3,
-                                'filter': 'price < 50'},
-                               '#productsTemplate',
-                               function() { alert('hello!'); });
-```
 
 
 Templating
@@ -64,16 +53,17 @@ Templating
 
 In order to display the products you must specify a template. The template 
 describes how each product is to be styled and what attributes to be shown.
-Each attribute is specified as a variable _{var}_. Any attribute specified in 
-the data feed [1] can be used as a variable in the template. Here is a small
-example of an template:
+
+[Handlebars.js](http://handlebarsjs.com/) is used as templating engine. Any 
+attribute specified in the data feed [1] can be used as a variable in the template. 
+Here is a small example of an template:
 
 ```html
 <script id="productsTemplate" type="text/html"> 
   <li>
-    <a href="/product/{id}">
-      <img src="/images/product/{id}.jpg" />
-      {name} - {price},-
+    <a href="/product/{{id}}">
+      <img src="/images/product/{{id}}.jpg" />
+      {{name}} - {{price}},-
     </a>
   </li>
 </script>
@@ -82,7 +72,7 @@ example of an template:
 ### Fetch template metadata from own server
 
 By default the product metadata used to render the template is fetched from 
-The Social Digits API and only data provided in the datafeed is provided. In 
+The Social Digits API and only data provided in the datafeed is accessible. In 
 order to provide more flexibility you can fetch this data from your own 
 servers by implementing the datasource function in the configuration as
 demonstrated below:
@@ -104,7 +94,7 @@ The function takes two arguments:
  * products: The list of products id's contained in the result.
  * callback: A callback function to perform the rendering. It takes a single
  argument which is a list of dictionaries. Each dictionary represents the data
- associated with each product. Each key in the dictionarry corresponds to a 
+ associated with each product. Each key in the dictionary corresponds to a 
  template variable but each dictionary must have an entry named 'id' with the
  product id.
 

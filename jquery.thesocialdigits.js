@@ -9,7 +9,6 @@
     ga_tracking: 'The Social Digits'
   }
   
-  
   /**
    * Initial setup of the plugin.
    */
@@ -25,7 +24,7 @@
    *             which are handled automaticly.
    * @param template A jQuery selector for the template to be used.
    */
-  $.fn.thesocialdigits = function(api, args, template, callback) {
+  $.fn.thesocialdigits = function(api, args, template) {
     var elm = this;
     
     callAPI(api, args, function(data) {
@@ -35,10 +34,6 @@
       
         settings.datasource(data.result, function(products) {
           buildHTML(elm, data.result, template, products, metadata);
-          
-          if(typeof callback === 'function') {
-          	callback(data);
-          }
         });
       }
     });
@@ -114,17 +109,11 @@
    * Primitive template rendering.
    */
   function renderTemplate(template, products) {
+    template = Handlebars.compile(template.replace(new RegExp('<a ', 'g'), '<a rel="__tsd-{{id}}"'));
     var output = '';
-    
+
     for (var i = 0; i < products.length; i++) {
-      var product = products[i];
-      var tmp = template.replace(new RegExp('<a ', 'g'), '<a rel="__tsd-' + product['id'] + '"');
-      
-      for (var key in product) {
-        tmp = tmp.replace(new RegExp('{' + key + '}', 'g'), product[key]);
-      }
-      
-      output += tmp;
+      output += template(products[i]);
     }
     
     return output;

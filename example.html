@@ -7,6 +7,9 @@
     
     <!-- JSON support for legacy browsers. -->
     <script type="text/javascript" src="/json2.min.js"></script>
+
+    <!-- Use Handlebars.js for templating. -->
+    <script type="text/javascript" src="/handlebars.js"></script>
     
     <!-- The actual plugin for The Social Digits. -->
     <script type="text/javascript" src="/jquery.thesocialdigits.min.js"></script>
@@ -26,19 +29,15 @@
   
   <!-- The template to be used when rendering the products. 
        
-       All variables in the template is denoted by {}, so the variable named var
-       is denoted {var}. This template is applied to each product in the result
-       from The Social Digits API method. Each key in the products 
-       dictionary/object, given by the datasource function you have defined in
-       the plugin configuration, is mapped to a variable name.
+       Handlebars.js (http://handlebarsjs.com/) is used as templating engine.
        
        Remember to set the type attribute to 'text/html' for templates.
    -->
   <script id="productsTemplate" type="text/html"> 
     <li>
-      <a href="/product/{id}">
-        <img src="/images/product/{id}.jpg" />
-        {name} - {price},-
+      <a href="/product/{{id}}">
+        <img src="/images/product/{{id}}.jpg" />
+        {{name}} - {{price}},-
       </a>
     </li>
   </script>
