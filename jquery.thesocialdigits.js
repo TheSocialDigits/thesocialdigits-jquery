@@ -1,11 +1,25 @@
 (function( $ ) {
   
+  language_mapping = {
+    'da': 'danish', 
+    'nl': 'dutch', 
+    'en': 'english', 
+    'fi': 'finnish', 
+    'fr': 'french', 
+    'de': 'german', 
+    'it': 'italian', 
+    'no': 'norwegian', 
+    'nb': 'norwegian',
+    'pt': 'portuguese', 
+    'ru': 'russian', 
+    'es': 'spanish',
+    'sv': 'swedish',
+    'us': 'english'
+  }
+
   // Global settings
   var settings = {
     key: '',
-    datasource: function(products, callback) {
-        callAPI('attributes', {'products': products}, callback);
-    },
     ga_tracking: 'The Social Digits'
   }
   
@@ -14,6 +28,29 @@
    */
   $.thesocialdigits = function(newSettings) {
     $.extend(settings, newSettings);
+
+    // auto detect language
+    if(!('language' in settings)) {
+      var language_code = $('html').attr('lang');
+
+      if(language_code in language_mapping) {
+        settings.language = language_mapping[language_code];
+      }
+    }
+
+    // declare default data source function
+    if(!('datasource' in settings)) {
+      settings.datasource = function(products, callback) {
+        var args = {'products': products};
+
+        // send language if specified
+        if('language' in settings) {
+          args.language = settings.language;
+        }
+
+        callAPI('attributes', args, callback);
+      }
+    }
   }
 
   /**
