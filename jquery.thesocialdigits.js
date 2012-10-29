@@ -146,11 +146,11 @@
    * Primitive template rendering.
    */
   function renderTemplate(template, products) {
-    template = Handlebars.compile(template.replace(new RegExp('<a ', 'g'), '<a rel="__tsd-{{id}}"'));
+    template = Handlebars.compile(template);
     var output = '';
 
     for (var i = 0; i < products.length; i++) {
-      output += template(products[i]);
+      output += template(products[i]).replace(new RegExp('<a ', 'g'), '<a rel="__tsd-' + products[i].id + '"');
     }
     
     return output;
