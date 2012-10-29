@@ -98,7 +98,7 @@
     elm.append(renderTemplate($(template).html(), products));
     
     // add click logging
-    for (var i = 0; i < ids.length; i++) {
+    for (var i = 0; i < products.length; i++) {
       var product = products[i];
       
       $('a[rel="__tsd-' + product.id + '"]').click(product, function(event) {
