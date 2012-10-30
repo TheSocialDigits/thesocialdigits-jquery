@@ -69,7 +69,28 @@ Here is a small example of an template:
 </script>
 ```
 
-### Fetch template metadata from own server
+Callback
+--------
+
+The plugin can take a callback function as an optional fourth argument. This function takes
+the raw API response as its only argument. This can be used for either debugging or chaining 
+results (eg. if you make use of the result of one API call when making another.
+
+Here is a small example of a callback function that displays the response status as an alert.
+
+```javascript
+$('#products').thesocialdigits('popular', 
+                               {'limit': 3,
+                                'filter': 'price < 50'},
+                               '#productsTemplate',
+                               function(data) {
+                                 alert(data.status);
+                               });
+```
+
+
+Fetch template metadata from own server
+---------------------------------------
 
 By default the product metadata used to render the template is fetched from 
 The Social Digits API and only data provided in the datafeed is accessible. In 

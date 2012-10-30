@@ -60,8 +60,9 @@
    * @param args The arguments for the API except 'key' and 'visitor' argument
    *             which are handled automaticly.
    * @param template A jQuery selector for the template to be used.
+   * @param callback A optional callback function to work on the raw API response.
    */
-  $.fn.thesocialdigits = function(api, args, template) {
+  $.fn.thesocialdigits = function(api, args, template, callback) {
     var elm = this;
     
     callAPI(api, args, function(data) {
@@ -72,6 +73,10 @@
         settings.datasource(data.result, function(products) {
           buildHTML(elm, data.result, template, products, metadata);
         });
+      }
+
+      if(typeof callback === 'function') {
+        callback(data);
       }
     });
   };
