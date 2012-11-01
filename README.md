@@ -187,14 +187,6 @@ The call state object
 The call state object is a JavaScript object containing all information for a API call.
 The object has the following entries:
 
-    var callState = {
-          'api': api,
-          'args': args,
-          'template': template,
-          'element': elm,
-          'response': null
-        };
-
  * __api__: The name of the API called.
  * __args__: The argument dictionary for the API.
  * __template__: The reference for the template to be used.
