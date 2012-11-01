@@ -38,7 +38,7 @@
       }
     }
 
-    // declare default data source function
+    // set default data source function
     if(!('datasource' in settings)) {
       settings.datasource = function(products, callback) {
         var args = {'products': products};
@@ -51,6 +51,21 @@
         callAPI('attributes', args, callback);
       }
     }
+
+    // set default error function
+    if(!('error' in settings)) {
+      settings.error = function(state) {
+        if (typeof console != 'undefined') {
+          if(state.response != null && state.response.status == 'error') {
+            console.error(state.response.type + ": " + state.response.message);
+          } else if('timeout' in settings) {
+            console.error("Request timed out.");
+          } else {
+            console.error("Unknown error.");
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -58,25 +73,49 @@
    * 
    * @param api The name of the API.
    * @param args The arguments for the API except 'key' and 'visitor' argument
-   *             which are handled automaticly.
+   *             which are handled automatically.
    * @param template A jQuery selector for the template to be used.
    * @param callback A optional callback function to work on the raw API response.
+   * @param done A optional callback function which is triggered after all has been rendered.
    */
-  $.fn.thesocialdigits = function(api, args, template, callback) {
+  $.fn.thesocialdigits = function(api, args, template, callback, done) {
     var elm = this;
+    var callState = {
+          'api': api,
+          'args': args,
+          'template': template,
+          'element': elm,
+          'response': null
+        };
+
+    if('timeout' in settings) {
+      var timeout = window.setTimeout(function () { 
+          settings.error(callState); 
+        },
+        settings.timeout);
+    }
     
     callAPI(api, args, function(data) {
-      if('result' in data) {
-        var metadata = {'api': api,
-                        'args': args};
-      
+      if(typeof timeout != 'undefined') {
+        window.clearTimeout(timeout);
+      }
+
+      if('result' in data) { 
         settings.datasource(data.result, function(products) {
-          buildHTML(elm, data.result, template, products, metadata);
+          buildHTML(elm, data.result, template, products, callState);
+
+          if(typeof done === 'function') {
+            done(callState);
+          }
         });
+
+      } else if ('status' in data && data.status != 'ok') {
+        callState.response = data;
+        settings.error(callState);
       }
 
       if(typeof callback === 'function') {
-        callback(data);
+        callback(callState);
       }
     });
   };
@@ -84,7 +123,7 @@
   /*
    * Build HTML from template.
    */
-  function buildHTML(elm, ids, template, _products, metadata) { 
+  function buildHTML(elm, ids, template, _products, callState) { 
     // ensure the correct sorting of product data
     var products = [];
     
@@ -99,52 +138,66 @@
       }
     }
                  
-    // generate the html from the template
+    // generate the HTML from the template
     elm.append(renderTemplate($(template).html(), products));
     
     // add click logging
     for (var i = 0; i < products.length; i++) {
       var product = products[i];
-      
-      $('a[rel="__tsd-' + product.id + '"]').click(product, function(event) {
-        // Google Analytics tracking
-        if(settings.ga_tracking != null && typeof _gaq != 'undefined') {
-          _gaq.push(['_trackEvent', 
-                     settings.ga_tracking, 
-                     metadata['api'], 
-                     event.data.id + ': ' + event.data.name]);
+
+      $('a[tsd="id-' + product.id + '"]').each(function(i, link) {
+        var onclick = $(link).attr('onclick');
+
+        // remove attributes
+        $(link).removeAttr('tsd');
+        $(link).removeAttr('onclick');
+
+        // function to continue after logging
+        function do_continue(timeout) {
+          if(typeof timeout != 'undefined') {
+            window.clearTimeout(timeout);
+          }
+
+          if(typeof onclick != 'undefined') {
+            link.__tsd_onclick = function() {
+              eval(onclick);
+            }
+            link.__tsd_onclick();
+          }
+
+          var href = $(link).attr('href');
+
+          if(typeof href != 'undefined') {
+            window.location.href = href;
+          }
         }
+
+        // the click logging event
+        $(link).click(product, function(event) {
+          // prevent default behavior
+          event.preventDefault();
+
+          // Google Analytics tracking
+          if(settings.ga_tracking != null && typeof _gaq != 'undefined') {
+            _gaq.push(['_trackEvent', 
+                       settings.ga_tracking, 
+                       callState.api, 
+                       event.data.id + ': ' + event.data.name]);
+          }
         
-        // TSD click logging
-        var href = $(this).attr('href');
+          // use timeouts to always continue
+          var timeout = window.setTimeout(do_continue, 500);
         
-        var t = setTimeout('window.location.href = "' + href + '";', 500);
+          // send the click request
+          callAPI('log_click', 
+                  {'product': event.data.id,
+                   'api': callState.api},
+                  function() { do_continue(timeout); });
         
-        callAPI('log_click', {'product': event.data.id,
-                              'api': metadata.api,
-                              'metadata': metadata}, function() {
-          clearTimeout(t);
-          window.location.href = href; // go on success
+          return false;
         });
-        
-        return false; // don't go yet
       });
     }
-    
-    // handle onclick attribute as jquery events
-    $('a[rel|="__tsd"]').each(function() {
-      var code = $(this).attr('onclick');
-      
-      if(typeof code != 'undefined') {
-        $(this).removeAttr('onclick');
-        $(this).click(function () {
-          eval(code);
-        });
-      }
-    });
-    
-    // cleanup to leave unmodified HTML
-    $('a[rel|="__tsd"]').removeAttr('rel');
   }
 
   /*
@@ -155,7 +208,7 @@
     var output = '';
 
     for (var i = 0; i < products.length; i++) {
-      output += template(products[i]).replace(new RegExp('<a ', 'g'), '<a rel="__tsd-' + products[i].id + '"');
+      output += template(products[i]).replace(new RegExp('<a ', 'g'), '<a tsd="id-' + products[i].id + '"');
     }
     
     return output;

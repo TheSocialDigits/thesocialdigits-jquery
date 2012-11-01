@@ -28,6 +28,19 @@ Note that the plugin must be configured before it can be used but the
 configuration can be in an external minified .js file.
 
 
+Configuration options
+---------------------
+
+The plugin can be configured with the following options:
+
+ * __key__: Your API key.
+ * __timeout__: Timeout for the request in milliseconds. Timeouts are disabled by default.
+ * __error__: Function to be called when an error or timeout occurs. It takes the [call state](#the-call-state-object) as its only argument. The default function logs the error to the browsers console.
+ * __datasource__: The function to [fetch product meta data](#fetch-template-metadata-from-own-server) from. As default it is a function that fetches data from The Social Digits service.
+ * __language__: The language used when fetching meta data from The Social Digits service. As default the plugin will try to automatically detect it.
+ * __ga_tracking__: The tracking category for [Google Analytics event tracking](#google-analytics-tracking). Use null to disable. The default value is 'The Social Digits'.
+
+
 Usage
 =====
 
@@ -69,12 +82,13 @@ Here is a small example of an template:
 </script>
 ```
 
-Callback
---------
+Callbacks
+---------
 
 The plugin can take a callback function as an optional fourth argument. This function takes
-the raw API response as its only argument. This can be used for either debugging or chaining 
-results (eg. if you make use of the result of one API call when making another.
+the [call state](#the-call-state-object) as its only argument. This can be used for either 
+debugging or chaining results eg. if you make use of the result of one API call when making 
+another.
 
 Here is a small example of a callback function that displays the response status as an alert.
 
@@ -83,8 +97,25 @@ $('#products').thesocialdigits('popular',
                                {'limit': 3,
                                 'filter': 'price < 50'},
                                '#productsTemplate',
-                               function(data) {
-                                 alert(data.status);
+                               function(callState) {
+                                 alert(callState.response.status);
+                               });
+```
+
+Further more a similar function can be given as a optional fifth argument. This function also
+takes the [call state](#the-call-state-object) as its only argument. This function is called
+upon a successful after rendering the template.
+
+```javascript
+$('#products').thesocialdigits('popular', 
+                               {'limit': 3,
+                                'filter': 'price < 50'},
+                               '#productsTemplate',
+                               function(callState) {
+                                 alert('call done with status' + callState.response.status);
+                               },
+                               function(callState) {
+                                 alert('rendering done with status + callState.response.status);
                                });
 ```
 
@@ -149,6 +180,10 @@ $.thesocialdigits({
   ga_tracking: null
 });
 ```
+
+The call state object
+=====================
+
 
 
 [1] http://developers.thesocialdigits.com/docs/export-data/data-feed
