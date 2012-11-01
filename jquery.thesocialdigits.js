@@ -96,6 +96,8 @@
     }
     
     callAPI(api, args, function(data) {
+      callState.response = data;
+
       if(typeof timeout != 'undefined') {
         window.clearTimeout(timeout);
       }
@@ -110,7 +112,6 @@
         });
 
       } else if ('status' in data && data.status != 'ok') {
-        callState.response = data;
         settings.error(callState);
       }
 
