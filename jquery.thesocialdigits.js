@@ -48,7 +48,7 @@
           args.language = settings.language;
         }
 
-        callAPI('attributes', args, callback);
+        callAPI('product/attributes', args, callback);
       }
     }
 
@@ -190,7 +190,7 @@
           var timeout = window.setTimeout(do_continue, 500);
         
           // send the click request
-          callAPI('log_click', 
+          callAPI('log/click', 
                   {'product': event.data.id,
                    'api': callState.api},
                   function() { do_continue(timeout); });
@@ -219,8 +219,10 @@
    * Base function to call the API.
    */
   function callAPI(api, args, callback) {
+    var protocol = ('https:' == document.location.protocol ? 'https' : 'http');
+    var url = protocol + '://api.thesocialdigits.com/v2/' + api + '?callback=?';
+
     args.key = settings.key;
-    var url = 'http://api.thesocialdigits.com/v1/' + api + '?callback=?';
     var data = {
             'payload': toJSON(args)
           };
