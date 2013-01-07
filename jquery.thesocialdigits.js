@@ -57,11 +57,11 @@
       settings.error = function(state) {
         if (typeof console != 'undefined') {
           if(state.response != null && state.response.status == 'error') {
-            console.error(state.response.type + ": " + state.response.message);
+            console.error(state.response.type + ": " + state.response.message + ". More info at " + state.response.moreInfo);
           } else if('timeout' in settings) {
             console.error("Request timed out.");
           } else {
-            console.error("Unknown error.");
+            console.error("Unknown error!");
           }
         }
       }
@@ -192,7 +192,8 @@
           // send the click request
           callAPI('log/click', 
                   {'product': event.data.id,
-                   'api': callState.api},
+                   'api': callState.api,
+                   'args': callState.args},
                   function() { do_continue(timeout); });
         
           return false;
