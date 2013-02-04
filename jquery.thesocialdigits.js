@@ -144,61 +144,62 @@
     
     // add click logging
     for (var i = 0; i < products.length; i++) {
-      var product = products[i];
+      // use a nested name space per product
+      (function(product) {
+        $('a[tsd="id-' + product.id + '"]').each(function(i, link) {
+          var onclick = $(link).attr('onclick');
 
-      $('a[tsd="id-' + product.id + '"]').each(function(i, link) {
-        var onclick = $(link).attr('onclick');
+          // remove attributes
+          $(link).removeAttr('tsd');
+          $(link).removeAttr('onclick');
 
-        // remove attributes
-        $(link).removeAttr('tsd');
-        $(link).removeAttr('onclick');
-
-        // function to continue after logging
-        function do_continue(timeout) {
-          if(typeof timeout != 'undefined') {
-            window.clearTimeout(timeout);
-          }
-
-          if(typeof onclick != 'undefined') {
-            link.__tsd_onclick = function() {
-              eval(onclick);
+          // function to continue after logging
+          function do_continue(timeout) {
+            if(typeof timeout != 'undefined') {
+              window.clearTimeout(timeout);
             }
-            link.__tsd_onclick();
+
+            if(typeof onclick != 'undefined') {
+              link.__tsd_onclick = function() {
+                eval(onclick);
+              }
+              link.__tsd_onclick();
+            }
+
+            var href = $(link).attr('href');
+
+            if(typeof href != 'undefined') {
+              window.location.href = href;
+            }
           }
 
-          var href = $(link).attr('href');
+          // the click logging event
+          $(link).click(function(event) {
+            // prevent default behavior
+            event.preventDefault();
 
-          if(typeof href != 'undefined') {
-            window.location.href = href;
-          }
-        }
-
-        // the click logging event
-        $(link).click(product, function(event) {
-          // prevent default behavior
-          event.preventDefault();
-
-          // Google Analytics tracking
-          if(settings.ga_tracking != null && typeof _gaq != 'undefined') {
-            _gaq.push(['_trackEvent', 
-                       settings.ga_tracking, 
-                       callState.api, 
-                       event.data.id + ': ' + event.data.name]);
-          }
+            // Google Analytics tracking
+            if(settings.ga_tracking != null && typeof _gaq != 'undefined') {
+              _gaq.push(['_trackEvent', 
+                         settings.ga_tracking, 
+                         callState.api, 
+                         product.id + ': ' + product.name]);
+            }
         
-          // use timeouts to always continue
-          var timeout = window.setTimeout(do_continue, 500);
+            // use timeouts to always continue
+            var timeout = window.setTimeout(do_continue, 500);
         
-          // send the click request
-          callAPI('log/click', 
-                  {'product': event.data.id,
-                   'api': callState.api,
-                   'args': callState.args},
-                  function() { do_continue(timeout); });
+            // send the click request
+            callAPI('log/click', 
+                    {'product': product.id,
+                     'api': callState.api,
+                     'args': callState.args},
+                    function() { do_continue(timeout); });
         
-          return false;
+            return false;
+          });
         });
-      });
+      })(products[i]);
     }
   }
 
