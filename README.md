@@ -1,3 +1,13 @@
+__WARNING: DEPRICATED!__
+
+This plugin have been replaced by [thesocialdigits.js](http://developers.thesocialdigits.com/guide/integration/thesocialdigits.js) and will no longer be maintained.
+
+[thesocialdigits.js](http://developers.thesocialdigits.com/guide/integration/thesocialdigits.js) is a more modern JS library which provides faster implementation, less maintenance and more features.
+
+If you have any questions about migrating to [thesocialdigits.js](http://developers.thesocialdigits.com/guide/integration/thesocialdigits.js) feel free to contact us at [support@thesocialdigits.com](mailto:support@thesocialdigits.com) or via the live support at [http://developers.thesocialdigits.com](http://developers.thesocialdigits.com).
+
+
+
 jQuery plugin for The Social Digits
 ===================================
 
